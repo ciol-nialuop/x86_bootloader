@@ -49,12 +49,12 @@ print_char:
 	mov bl, 0x07	; text attribute: lightgrey font on black background
 	int 0x10
 	ret
-	
+
 print_string:
 	nextc:
 		mov al, [si]	; al = *si
-		inc si			; si++
-		cmp al, 0		; if al=0 call exit
+		inc si		; si++
+		cmp al, 0	; if al=0 call exit
 		je exit
 		call print_char
 		jmp nextc
@@ -87,7 +87,7 @@ reset_drive:
 loadkernel:	; kernel is placed to 2nd sector load it to h7E00
 	mov si, msg_kernel
 	call print_string
-	mov ax, 0x07E0	; segment 
+	mov ax, 0x07E0	; segment
 	mov es, ax
 	mov bx, 0x0000 ; offset add => 0x7E00
 	mov ah, 02	; BIOS read sector function
@@ -121,7 +121,7 @@ load_GDT: ; move GDT to 0x500
 	mov cx,[GDTsize]              ; size of GDT
 	cld                           ; Clear the Direction Flag
 	rep movsb                     ; Move it
-    lgdt [GDTR]
+	lgdt [GDTR]
 
 enter_pmode: ; enter protected mode
 	mov si, msg_pmode
@@ -161,9 +161,29 @@ times 510-($-$$) db 0
 SIGNATURE dw 0AA55h	; boot signature
 
 ; SECOND SECTOR --------------------------------------------------------
-;	;affichage H mode protege kernel
-;	mov byte [0xB8000],'I'
-;	mov byte [0xB8001],0x57
-;	hlt
-;msg_test db 'SEC...', 13, 10, 0
-;times 1024-($-$$) db 0
+; This is our micro kernel running in protected mode, use video memory.
+	mov byte [0xB8000],'H'
+	mov byte [0xB8001],0x57
+	mov byte [0xB8002],'E'
+	mov byte [0xB8003],0x57
+	mov byte [0xB8004],'L'
+	mov byte [0xB8005],0x57
+	mov byte [0xB8006],'L'
+	mov byte [0xB8007],0x57
+	mov byte [0xB8008],'O'
+	mov byte [0xB8009],0x57
+	mov byte [0xB800A],' '
+	mov byte [0xB800B],0x57
+	mov byte [0xB800C],'W'
+	mov byte [0xB800D],0x57
+	mov byte [0xB800E],'O'
+	mov byte [0xB800F],0x57
+	mov byte [0xB8010],'R'
+	mov byte [0xB8011],0x57
+	mov byte [0xB8012],'L'
+	mov byte [0xB8013],0x57
+	mov byte [0xB8014],'D'
+	mov byte [0xB8015],0x57
+	hlt
+msg_test db 'SEC...', 13, 10, 0
+times 1024-($-$$) db 0
