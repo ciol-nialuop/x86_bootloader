@@ -159,31 +159,3 @@ enter_pmode: ; enter protected mode
 
 times 510-($-$$) db 0
 SIGNATURE dw 0AA55h	; boot signature
-
-; SECOND SECTOR --------------------------------------------------------
-; This is our micro kernel running in protected mode, use video memory.
-	mov byte [0xB8000],'H'
-	mov byte [0xB8001],0x57
-	mov byte [0xB8002],'E'
-	mov byte [0xB8003],0x57
-	mov byte [0xB8004],'L'
-	mov byte [0xB8005],0x57
-	mov byte [0xB8006],'L'
-	mov byte [0xB8007],0x57
-	mov byte [0xB8008],'O'
-	mov byte [0xB8009],0x57
-	mov byte [0xB800A],' '
-	mov byte [0xB800B],0x57
-	mov byte [0xB800C],'W'
-	mov byte [0xB800D],0x57
-	mov byte [0xB800E],'O'
-	mov byte [0xB800F],0x57
-	mov byte [0xB8010],'R'
-	mov byte [0xB8011],0x57
-	mov byte [0xB8012],'L'
-	mov byte [0xB8013],0x57
-	mov byte [0xB8014],'D'
-	mov byte [0xB8015],0x57
-	hlt
-msg_test db 'SEC...', 13, 10, 0
-times 1024-($-$$) db 0
