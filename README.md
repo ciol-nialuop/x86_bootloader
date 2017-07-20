@@ -9,6 +9,7 @@ This is a basic x86 bootloader
 - Switch to protected mode
 - Execute kernel
 
-build: nasm -o bootstrap.bin bootstrap.asm
+run (qemu):
+qemu-system-i386 -fda boot.flp
 
 contact: loic.poulain@gmail.com

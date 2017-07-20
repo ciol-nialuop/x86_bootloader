@@ -49,12 +49,12 @@ print_char:
 	mov bl, 0x07	; text attribute: lightgrey font on black background
 	int 0x10
 	ret
-	
+
 print_string:
 	nextc:
 		mov al, [si]	; al = *si
-		inc si			; si++
-		cmp al, 0		; if al=0 call exit
+		inc si		; si++
+		cmp al, 0	; if al=0 call exit
 		je exit
 		call print_char
 		jmp nextc
@@ -87,7 +87,7 @@ reset_drive:
 loadkernel:	; kernel is placed to 2nd sector load it to h7E00
 	mov si, msg_kernel
 	call print_string
-	mov ax, 0x07E0	; segment 
+	mov ax, 0x07E0	; segment
 	mov es, ax
 	mov bx, 0x0000 ; offset add => 0x7E00
 	mov ah, 02	; BIOS read sector function
@@ -121,7 +121,7 @@ load_GDT: ; move GDT to 0x500
 	mov cx,[GDTsize]              ; size of GDT
 	cld                           ; Clear the Direction Flag
 	rep movsb                     ; Move it
-    lgdt [GDTR]
+	lgdt [GDTR]
 
 enter_pmode: ; enter protected mode
 	mov si, msg_pmode
@@ -159,11 +159,3 @@ enter_pmode: ; enter protected mode
 
 times 510-($-$$) db 0
 SIGNATURE dw 0AA55h	; boot signature
-
-; SECOND SECTOR --------------------------------------------------------
-;	;affichage H mode protege kernel
-;	mov byte [0xB8000],'I'
-;	mov byte [0xB8001],0x57
-;	hlt
-;msg_test db 'SEC...', 13, 10, 0
-;times 1024-($-$$) db 0
